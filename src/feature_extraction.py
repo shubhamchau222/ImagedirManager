@@ -29,7 +29,7 @@ def createfilenamepkl(configPath:str) -> str:
   
 # model = VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
 
-print('Hello world')
+print('Hello world')  # first priority
 
 
 # def feature_extracor(img_path,model):
