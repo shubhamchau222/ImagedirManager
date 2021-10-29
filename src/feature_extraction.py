@@ -9,12 +9,17 @@ import os
 import yaml 
 from src.utils.all_utils import create_dir , genFilesnamepkl , load_config
 
-def createfilenamepkl(configPath:str) -> str:
-    data = load_config(configPath)
-    print(data)
+# load& read configs 
+
+structure_data = load_config("configs/structure.yaml" )
+model_data = None 
+
+def createfilenamepkl(config_data:dict) -> str:
+    data = config_data
     main_dir = data['internal_ops']['artifact_dir']
     dumpdir = data['internal_ops']['dumpeddir']
     pklname=data['internal_ops']['src_pkl_filename']
+    print(type(pklname))
     messeddirPath= data['internal_ops']['messed_dirPath']
     dumdirFullpath= os.path.join(main_dir,dumpdir)
     pklfilepath= os.path.join(dumdirFullpath,pklname)
@@ -26,19 +31,25 @@ def createfilenamepkl(configPath:str) -> str:
     return messedDirPath
 
   
-# model = VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
+model = VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
 
-print('Hello world')  # first priority
+# extract the features from img (sub-function)
+
+def get_features(img_path , model):
+    img = image.load_img(img_path,target_size=(224,224))
+    img_array = image.img_to_array(img)
+    expanded_img = np.expand_dims(img_array,axis=0)
+    preprocessed_img = preprocess_input(expanded_img)
+    result = model.predict(preprocessed_img).flatten()
+    return result
 
 
-# def feature_extracor(img_path,model):
-#     pass 
+
+
 
 
 if __name__ == '__main__':
     args = argparse.ArgumentParser()
-    args.add_argument("--config" ,"-c" , default="configs/structure.yaml" ) 
-    # adding the arguments , default = 'congig filepath'
+    args.add_argument("--configdata" ,"-d" , default=structure_data ) 
     parsed_args = args.parse_args()
-    print(parsed_args)
-    createfilenamepkl(parsed_args.config)
+    createfilenamepkl(parsed_args.configdata)
