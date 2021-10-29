@@ -19,7 +19,6 @@ def createfilenamepkl(configPath:str) -> str:
     dumdirFullpath= os.path.join(main_dir,dumpdir)
     pklfilepath= os.path.join(dumdirFullpath,pklname)
     # print(pklfilepath)
-
     # first create dir to store pkl filenames
     create_dir([main_dir])  # check if artifacts dir is available ? if no then create else:pass    
     create_dir([dumdirFullpath])  # creting dir to store pkl files 
