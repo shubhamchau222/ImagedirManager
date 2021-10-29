@@ -7,7 +7,7 @@ def create_dir(dirs_paths:list)-> None:
     for dir_path in dirs_paths:
         if not os.path.isdir(dir_path):
             os.makedirs(dir_path , exist_ok= True) 
-    print(f'{dirs_paths} dir created')
+    # print(f'{dirs_paths} dir created')
 
 
 
@@ -24,6 +24,7 @@ def load_config(config_filePath):
             print('config file not detected....')
     except Exception as e:
         print(f'Error in load config fuction {str(e)}')
+        raise e 
 
         
 
