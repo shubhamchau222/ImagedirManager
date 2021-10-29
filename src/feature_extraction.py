@@ -31,11 +31,11 @@ def createfilenamepkl(config_data:dict) -> list:
     return [messedDirPath , pklfilepath]
 
   
-model = VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
+vggf_model = VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
 
 # extract the features from img (sub-function)
 
-def get_features(img_path , Model):
+def get_features(img_path , model):
     ''' load the img => cnvt-array => chng dims => preprocess => extract
         =>Features with the help of model 
     '''
@@ -43,29 +43,29 @@ def get_features(img_path , Model):
     img_array = image.img_to_array(img)
     expanded_img = np.expand_dims(img_array,axis=0)
     preprocessed_img = preprocess_input(expanded_img)
-    result = Model.predict(preprocessed_img).flatten()
+    result = model.predict(preprocessed_img).flatten()
     return result
 
-def feature_extractor(config_data:dict , File_names_pklfile_path:str):   # require the filename also 
+def feature_extractor(config_data:dict , file_names_pklfile_path:str):   # require the filename also 
     config_data=config_data
-    Extracted_features = []
+    extracted_features = []
     try:
-        if os.path.isfile(File_names_pklfile_path):
-            filenames = pickle.load(open(File_names_pklfile_path , mode='rb'))
+        if os.path.isfile(file_names_pklfile_path):
+            filenames = pickle.load(open(file_names_pklfile_path , mode='rb'))
             for file in filenames:
-                feature = get_features(img_path=file , Model=model)
-                Extracted_features.append(feature)    
+                feature = get_features(img_path=file , model=vggf_model)
+                extracted_features.append(feature)    
 
             # save extracted features at given loc 
-            Maindir = config_data['internal_ops']['artifact_dir']
+            maindir = config_data['internal_ops']['artifact_dir']
             imgfeaturesdir = config_data['internal_ops']['ExtractedFeatures']['imgfeaturesdir']
             imgFeaturesFilename = config_data['internal_ops']['ExtractedFeatures']['imgFeaturesFilename']
-            imgfeaturesdir_full_path = os.path.join(Maindir,imgfeaturesdir)
-            Filename = os.path.join(Maindir , imgfeaturesdir , imgFeaturesFilename)      # features_embedding.pkl
+            imgfeaturesdir_full_path = os.path.join(maindir,imgfeaturesdir)
+            Filename = os.path.join(maindir , imgfeaturesdir , imgFeaturesFilename)      # features_embedding.pkl
 
             # check imgfeaturesdir is present/not else:create
             create_dir([imgFeaturesFilename]) 
-            pickle.dump(Extracted_features,open(imgfeaturesdir_full_path , 'rb'))
+            pickle.dump(extracted_features,open(imgfeaturesdir_full_path , 'rb'))
 
         else:
             print('Filename Pickle file not Found....')      
