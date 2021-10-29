@@ -2,3 +2,4 @@ internal_ops:
   artifact_dir : artifacts
   dumpeddir: fileNamespkl
   src_pkl_filename: filename.pkl
+  messed_dirPath: none   # provide the dirpath which you want to arrange
