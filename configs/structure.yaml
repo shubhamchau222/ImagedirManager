@@ -1,0 +1,4 @@
+internal_ops:
+  artifact_dir : artifact
+  input_image_pickle: data
+  imput_img_picklename: input.pkl
