@@ -7,6 +7,7 @@ def create_dir(dirs_paths:list)-> None:
     for dir_path in dirs_paths:
         if not os.path.isdir(dir_path):
             os.makedirs(dir_path , exist_ok= True) 
+    print(f'{dirs_paths} dir created')
 
 
 
@@ -18,7 +19,7 @@ def load_config(config_filePath):
             with open(config_filePath , mode='r') as f:
                 data=yaml.safe_load(f)
                 f.close()
-                return data 
+            return data 
         else:
             print('config file not detected....')
     except Exception as e:
