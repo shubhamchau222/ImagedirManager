@@ -1,9 +1,9 @@
 internal_ops:
   artifact_dir : artifacts
   dumpeddir: fileNamespkl
-  src_pkl_filename: filename.pkl
+  src_pkl_filename: filenames.pkl
   messed_dirPath: none   # provide the dirpath which you want to arrange
   input : none 
   ExtractedFeatures:
     imgfeaturesdir : data
-    imgFeaturesFilename: features.pkl
+    imgFeaturesFilename: features_embedding.pkl
