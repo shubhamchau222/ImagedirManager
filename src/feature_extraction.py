@@ -80,8 +80,9 @@ if __name__ == '__main__':
     try:
         OPFN = createfilenamepkl(parsed_args.configdata)
         FnamePklPath = OPFN[1] 
-        feature_extractor(config_data=parsed_args.configdata , File_names_pklfile_path=FnamePklPath)
-        print('Feature Extaractor Done successFully....')
+        print(FnamePklPath)
+        #feature_extractor(config_data=parsed_args.configdata , File_names_pklfile_path=FnamePklPath)
+        #print('Feature Extaractor Done successFully....')
 
     except Exception as e:
         raise e 

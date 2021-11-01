@@ -42,10 +42,11 @@ def genFilesnamepkl(messedDirPath:str , dumpingPath:str):
                 else:
                     pass                        
             # dumped the filename into pickle format
+            # print(filenames)
             pickle.dump(filenames , open(dumpingPath,'wb'))
             return messedDirPath       
         else:
-            pass
+            print('Directory not Found....')
     except Exception as e:
         print('error in genfilenamepkl')
         raise e 

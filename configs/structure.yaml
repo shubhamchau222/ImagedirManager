@@ -2,7 +2,7 @@ internal_ops:
   artifact_dir : artifacts
   dumpeddir: fileNamespkl
   src_pkl_filename: filenames.pkl
-  messed_dirPath: none   # provide the dirpath which you want to arrange
+  messed_dirPath: ./images # provide the dirpath which you want to arrange
   PredictionImgDir: predImgDir # provide the predImgPath 
   input : none 
   ExtractedFeatures:
