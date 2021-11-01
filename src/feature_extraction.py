@@ -6,7 +6,6 @@ import pickle
 from tqdm import tqdm
 import argparse
 import os
-import yaml 
 from src.utils.all_utils import create_dir , genFilesnamepkl , load_config
 
 # load& read configs 
