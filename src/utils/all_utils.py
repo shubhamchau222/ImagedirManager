@@ -1,6 +1,8 @@
+from numpy.lib.utils import source
 import yaml 
 import os
 import pickle 
+import shutil 
 
 
 def create_dir(dirs_paths:list)-> None:
@@ -46,6 +48,28 @@ def genFilesnamepkl(messedDirPath:str , dumpingPath:str):
             pass
     except Exception as e:
         print('error in genfilenamepkl')
+        raise e 
+
+
+def move_file_to_dir(imgfilepath , destdir):
+    '''
+        Method: move_file_to_dir
+        inputs: 
+                imgfilepath :  imgpath which want to move : str
+                destdir : In which dir you want to move : str
+        returns : None 
+    '''
+    try:
+        if os.path.isdir(destdir):
+            if os.path.isfile(imgfilepath):
+                shutil.move(destdir , imgfilepath)
+            else:
+                pass
+        else:
+            print(f'dir {destdir} is not Found..')   
+           
+    except Exception as e:
+        print(f'Error occures in fun : move_file_to_dir.. {str(e)} ')
         raise e 
 
 
