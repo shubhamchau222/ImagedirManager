@@ -40,7 +40,7 @@ def detectANDpred(confg1 , confg2 , threshould=0.7):
     detector = MTCNN()
     predImg = cv2.imread(predImgpath)
     detectionOp = detector.detect_faces(predImg)
-    x,y,width,height = detectionOp[0]['box']         # (  x,y , width , height)  => x2,y2(diagonalpoint) (x+width , y+height)
+    x,y,width,height = detectionOp[0]['box']         # (  x,y , width , height)  => x2,y2(diagonal_point) (x+width , y+height)
     x1,y1,x2,y2 = x,y,x+width,y+height
 
     # create the boxes and crop the img
