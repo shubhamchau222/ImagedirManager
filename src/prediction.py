@@ -1,6 +1,6 @@
 '''
 author : Shubbham Chau 
-Date : 30-oct-2021
+Date : 30-oct-2021 / 1-sept
 '''
 
 
@@ -13,7 +13,6 @@ from PIL import Image
 import numpy as np
 import argparse
 import pickle
-import yaml 
 import cv2
 import os 
 
@@ -21,7 +20,7 @@ import os
 
 
 
-model = VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
+# model = VGGFace(model='resnet50',include_top=False,input_shape=(224,224,3),pooling='avg')
 
 
 def detectANDpred(confg1 , confg2 , threshould=0.7):
@@ -38,41 +37,83 @@ def detectANDpred(confg1 , confg2 , threshould=0.7):
     # detect the faces from imgs
 
     detector = MTCNN()
-    predImg = cv2.imread(predImgpath)
-    detectionOp = detector.detect_faces(predImg)
-    x,y,width,height = detectionOp[0]['box']         # (  x,y , width , height)  => x2,y2(diagonal_point) (x+width , y+height)
-    x1,y1,x2,y2 = x,y,x+width,y+height
+    # predImg = cv2.imread(predImgpath)
+    # detectionOp = detector.detect_faces(predImg)
+    img = cv2.imread(predImgpath)
+    i = detector.detect_faces(img)
+    print(i)
+    # ----------------- debugginh --------------------------------------#
 
-    # create the boxes and crop the img
-    detected_face = predImg[y1:y2,x1:x2]
-    #  extract its features
-    image = Image.fromarray(detected_face)
-    image = image.resize((224,224))
-    face_array = np.asarray(image)
-    face_array = face_array.astype('float32')    
-    expanded_img = np.expand_dims(face_array,axis=0)
-    preprocessed_img = preprocess_input(expanded_img)
-    result = model.predict(preprocessed_img).flatten()
+    x,y,widht,height = i[0]['box']
 
-    # let's bring the feature list here
-    maindir = conf1['internal_ops']['artifact_dir']
-    imgfeaturesdir = conf1['internal_ops']['ExtractedFeatures']['imgfeaturesdir']  # embeddingImgdata
-    imgFeaturesFilename = conf1['internal_ops']['ExtractedFeatures']['imgFeaturesFilename']  # features_embedding.pkl 
-    Filename = os.path.join(maindir , imgfeaturesdir , imgFeaturesFilename)
-    # embeddings 
-    embeddings = pickle.load(open(file=Filename , mode='rb'))
-    similar_imgs_score = []
-    for i in range(len(embeddings)):
-        similar_imgs_score.append(cosine_similarity(result.reshape(1,-1),embeddings[i].reshape(1,-1))[0][0])
+    left_eyeX,left_eyeY = i[0]['keypoints']['left_eye']
+    right_eyeX,right_eyeY = i[0]['keypoints']['right_eye']
+    noseX,noseY = i[0]['keypoints']['nose']
+    mouth_leftX,mouth_leftY = i[0]['keypoints']['mouth_left']
+    mouth_rightX,mouth_rightY = i[0]['keypoints']['mouth_right']
 
-    # we'll get list of similarity with all imgs [0.20 , 0.1 , ...] [f1,f2,.....] sequentially....
+    # draw circles on keypoints (left , right eyes , mouth , nose )
+    cv2.circle(img,center=(left_eyeX,left_eyeY),color=(255,0,0),thickness=2,radius=1)
+    cv2.circle(img,center=(right_eyeX,right_eyeY),color=(255,0,0),thickness=2,radius=1)
+    cv2.circle(img,center=(noseX,noseY),color=(255,0,0),thickness=3,radius=2)
+    cv2.circle(img,center=(mouth_leftX,mouth_leftY),color=(255,0,0),thickness=3,radius=2)
+    cv2.circle(img,center=(mouth_rightX,mouth_rightY),color=(255,0,0),thickness=3,radius=2)
 
-# index_pos = sorted(list(enumerate(similarity)),reverse=True,key=lambda x:x[1])[0][0]
+    
+    cv2.rectangle(img,pt1=(x,y),pt2=(x+widht,y+height),color=(255,0,250),thickness=1)
+    cv2.imshow('window',img)
+    cv2.waitKey(0)
 
-# temp_img = cv2.imread(filenames[index_pos])
-# cv2.imshow('output',temp_img)
-# cv2.waitKey(0)
-# # recommend that image
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#     #-----------------------------debugging------------------------------# 
+#     x,y,width,height = detectionOp[0]['box']         # (  x,y , width , height)  => x2,y2(diagonal_point) (x+width , y+height)
+#     x1,y1,x2,y2 = x,y,x+width,y+height
+
+
+#     # create the boxes and crop the img
+#     detected_face = predImg[y1:y2,x1:x2]
+#     #  extract its features
+#     image = Image.fromarray(detected_face)
+#     image = image.resize((224,224))
+#     face_array = np.asarray(image)
+#     face_array = face_array.astype('float32')    
+#     expanded_img = np.expand_dims(face_array,axis=0)
+#     preprocessed_img = preprocess_input(expanded_img)
+#     result = model.predict(preprocessed_img).flatten()
+
+#     # let's bring the feature list here
+#     maindir = conf1['internal_ops']['artifact_dir']
+#     imgfeaturesdir = conf1['internal_ops']['ExtractedFeatures']['imgfeaturesdir']  # embeddingImgdata
+#     imgFeaturesFilename = conf1['internal_ops']['ExtractedFeatures']['imgFeaturesFilename']  # features_embedding.pkl 
+#     Filename = os.path.join(maindir , imgfeaturesdir , imgFeaturesFilename)
+#     # embeddings 
+#     embeddings = pickle.load(open(file=Filename , mode='rb'))
+#     similar_imgs_score = []
+#     for i in range(len(embeddings)):
+#         similar_imgs_score.append(cosine_similarity(result.reshape(1,-1),embeddings[i].reshape(1,-1))[0][0])
+
+#     # we'll get list of similarity with all imgs [0.20 , 0.1 , ...] [f1,f2,.....] sequentially....
+
+# # index_pos = sorted(list(enumerate(similarity)),reverse=True,key=lambda x:x[1])[0][0]
+
+# # temp_img = cv2.imread(filenames[index_pos])
+# # cv2.imshow('output',temp_img)
+# # cv2.waitKey(0)
+# # # recommend that image
 
 
 
