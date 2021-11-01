@@ -1,0 +1,3 @@
+Prediction:
+  pred_imgPath: null   # provide the pred img path here 
+  provideNameofImg: ProvidetheName
