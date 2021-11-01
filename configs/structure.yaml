@@ -3,7 +3,12 @@ internal_ops:
   dumpeddir: fileNamespkl
   src_pkl_filename: filenames.pkl
   messed_dirPath: none   # provide the dirpath which you want to arrange
+  PredictionImgDir: predImgDir # provide the predImgPath 
   input : none 
   ExtractedFeatures:
-    imgfeaturesdir : data
+    imgfeaturesdir : embeddingImgdata
     imgFeaturesFilename: features_embedding.pkl
+  
+
+
+  

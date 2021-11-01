@@ -64,8 +64,8 @@ def feature_extractor(config_data:dict , file_names_pklfile_path:str):   # requi
             Filename = os.path.join(maindir , imgfeaturesdir , imgFeaturesFilename)      # features_embedding.pkl
 
             # check imgfeaturesdir is present/not else:create
-            create_dir([imgFeaturesFilename]) 
-            pickle.dump(extracted_features,open(imgfeaturesdir_full_path , 'rb'))
+            create_dir([imgfeaturesdir_full_path]) 
+            pickle.dump(extracted_features,open(Filename , 'rb'))
 
         else:
             print('Filename Pickle file not Found....')      
